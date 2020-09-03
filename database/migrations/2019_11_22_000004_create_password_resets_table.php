@@ -24,7 +24,7 @@ class CreatePasswordResetsTable extends Migration
             $table->engine = 'InnoDB';
             $table->string('email');
             $table->string('token');
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable()->default(null);
 
             $table->index(["email"], 'password_resets_email_index');
         });
@@ -35,8 +35,8 @@ class CreatePasswordResetsTable extends Migration
      *
      * @return void
      */
-     public function down()
-     {
-       Schema::dropIfExists($this->tableName);
-     }
+    public function down()
+    {
+        Schema::dropIfExists($this->tableName);
+    }
 }

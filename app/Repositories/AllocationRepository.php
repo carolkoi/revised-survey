@@ -11,7 +11,7 @@ use App\Repositories\BaseRepository;
  * @version October 30, 2019, 7:33 am UTC
 */
 
-class AllocationRepository extends BaseRepository
+class   AllocationRepository extends BaseRepository
 {
     /**
      * @var array

@@ -44,7 +44,7 @@
         {!! Form::label('user_id', 'Staffs:') !!}
         {!! Form::select('user_id[]', $users, isset($allocation['selected_users'])?$allocation['selected_users']:null,
         ['class' => 'form-control select2', 'multiple' => 'multiple'])!!}
-    </div>
+    </div>.
 
     <!-- Client Id Field -->
 
