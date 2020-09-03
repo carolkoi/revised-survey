@@ -95,7 +95,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Approvals extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     public $table = 'workflows';
 
@@ -189,7 +189,7 @@ class Approvals extends Model
      */
     public function approvable()
     {
-        return $this->morphTo('approvable', 'model_type', 'model_id', 'id');
+        return $this->morphTo('approvable', 'model_type', 'model_id', 'iso_id');
     }
 
     public function workflow()

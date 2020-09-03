@@ -55,7 +55,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class WorkflowStageType extends Model
 {
-    use SoftDeletes;
+//    use SoftDeletes;
 
     public $table = 'workflow_stage_type';
 
@@ -91,8 +91,8 @@ class WorkflowStageType extends Model
      */
     public static $rules = [
         'name' => 'required|string',
-        'weight' => 'required|integer',
-        'slug' => 'required|bail|string|unique:workflow_stage_type,slug'
+//        'weight' => 'required|integer',
+//        'slug' => 'required|bail|string|unique:workflow_stage_type,slug'
     ];
 
     /**

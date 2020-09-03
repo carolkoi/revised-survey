@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Response;
-use App\Models\Template;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,8 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $templates = Template::with(['questions', 'surveyType'])->get();
-//        dd($templates);
-        return view('home', compact('templates'));
+    $all_transactions = Transactions::all();
+        $transactions = Transactions::orderBy('date_time_added', 'desc')->paginate(80);
+        return view('home', ['transactions' => $transactions, 'all_transactions' => $all_transactions] );
     }
 }

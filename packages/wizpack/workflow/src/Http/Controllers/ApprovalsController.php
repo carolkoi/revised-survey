@@ -2,6 +2,7 @@
 
 namespace WizPack\Workflow\Http\Controllers;
 
+use App\Models\SessionTxn;
 use Illuminate\Support\Facades\Auth;
 use WizPack\Workflow\DataTables\ApprovalsDataTable;
 use WizPack\Workflow\Http\Requests\CreateApprovalsRequest;
@@ -75,7 +76,7 @@ class ApprovalsController extends AppBaseController
      */
     public function show($id)
     {
-        $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
+         $workflow = $this->approvalsRepository->getApprovalSteps($id)->get();
 
         $transformedResult = new Collection($workflow, new ApprovalTransformer());
 
@@ -86,15 +87,19 @@ class ApprovalsController extends AppBaseController
         $approvers = $data->pluck('currentStageApprovers')->flatten(2);
 
         $approvals = $data->pluck('approvalStagesStepsAndApprovers')->flatten(1);
+//        dd($approvals);
 
         $workflow = $data->pluck('workflowDetails')->first();
 
-        $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
+        $transaction = $data->pluck('workflowInfo')->first();
+//        dd($transaction->iso_id);
 
+        $approvalHasBeenRejected = $data->pluck('approvalRejected')->first();
+        $sessionTxn = SessionTxn::where('txn_id', $transaction->iso_id)->first();
         if (empty($approvals)) {
             Flash::error('Approvals not found');
 
-            return redirect(route('wizpack::approvals.index'));
+            return redirect(route('upesi::approvals.index'));
         }
 
         return view('wizpack::approvals.show', compact(
@@ -102,7 +107,9 @@ class ApprovalsController extends AppBaseController
                 'workflow',
                 'approvers',
                 'currentStage',
-                'approvalHasBeenRejected'
+                'approvalHasBeenRejected',
+                'transaction',
+                'sessionTxn'
             )
         );
     }
@@ -121,7 +128,7 @@ class ApprovalsController extends AppBaseController
         if (empty($approvals)) {
             Flash::error('Approvals not found');
 
-            return redirect(route('wizpack::approvals.index'));
+            return redirect(route('upesi::approvals.index'));
         }
 
         return view('wizpack::approvals.edit')->with('approvals', $approvals);
@@ -138,19 +145,21 @@ class ApprovalsController extends AppBaseController
      */
     public function update($id, UpdateApprovalsRequest $request)
     {
+//        dd('here');
+
         $approvals = $this->approvalsRepository->myApprovals()->find($id);
 
         if (empty($approvals)) {
             Flash::error('Approvals not found');
 
-            return redirect(route('wizpack::approvals.index'));
+            return redirect(route('upesi::approvals.index'));
         }
 
         $approvals = $this->approvalsRepository->update($request->all(), $id);
 
         Flash::success('Approvals updated successfully.');
 
-        return redirect(route('wizpack::approvals.index'));
+        return redirect(route('upesi::approvals.index'));
     }
 
     /**
@@ -168,13 +177,13 @@ class ApprovalsController extends AppBaseController
         if (empty($approvals)) {
             Flash::error('Approvals not found');
 
-            return redirect(route('wizpack::approvals.index'));
+            return redirect(route('upesi::approvals.index'));
         }
 
         $this->approvalsRepository->delete($id);
 
         Flash::success('Approvals deleted successfully.');
 
-        return redirect(route('wizpack::approvals.index'));
+        return redirect(route('upesi::approvals.index'));
     }
 }

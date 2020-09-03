@@ -35,11 +35,12 @@ class WhenApprovalRequestIsRaised
         //getting all the approval stages and their approvers
         $workflow = WorkflowType::Where([
             'slug' => $event->workflowType
-        ])->with(
+        ])->latest()->first()->with(
             [
                 'workflowStages' => function ($q) {
                     return $q->orderBy('weight', 'asc');
-                }, 'workflowStages.workflowApprovers',
+                },
+                'workflowStages.workflowApprovers',
                  'workflowStages.workflowApprovers.user'
             ]
         )->latest()->first();
@@ -65,12 +66,12 @@ class WhenApprovalRequestIsRaised
         //send mail to first approvers
 
 
-        if($response){
-            $approvers = $workflow->workflowStages->pluck('workflowApprovers')->first()->pluck('user')->toArray();
-            Mail::to($approvers)
-                ->cc(Auth::user())
-                ->send(new WorkflowApprovalRequestMail($workflow, $workflow->workflowStages, $event->model,  $response->first()));
-        }
+//        if($response){
+//            $approvers = $workflow->workflowStages->pluck('workflowApprovers')->first()->pluck('user')->toArray();
+//            Mail::to($approvers)
+//                ->cc(Auth::user())
+//                ->send(new WorkflowApprovalRequestMail($workflow, $workflow->workflowStages, $event->model,  $response->first()));
+//        }
 
     }
 

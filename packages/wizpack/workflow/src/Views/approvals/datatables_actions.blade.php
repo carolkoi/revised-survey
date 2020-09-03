@@ -1,15 +1,22 @@
-{!! Form::open(['route' => ['wizpack::approvals.destroy', $id], 'method' => 'delete']) !!}
-<div class='btn-group'>
-    <a href="{{ route('wizpack::approvals.show', $id) }}" class='btn btn-default btn-xs'>
-        <i class="glyphicon glyphicon-eye-open"></i>
+{{--{!! Form::open(['route' => ['upesi::approvals.destroy', $id], 'method' => 'delete']) !!}--}}
+{{--<div class='btn-group'>--}}
+@if($approved)
+    <a href="{{ route('upesi::approvals.show', $id) }}" class='btn btn-default'>
+        View
     </a>
-    <a href="{{ route('wizpack::approvals.edit', $id) }}" class='btn btn-default btn-xs'>
-        <i class="glyphicon glyphicon-edit"></i>
+    @else
+    <a href="{{ route('upesi::approvals.show', $id) }}" class='btn btn-primary'>
+        Approve
     </a>
-    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [
-        'type' => 'submit',
-        'class' => 'btn btn-danger btn-xs',
-        'onclick' => "return confirm('Are you sure?')"
-    ]) !!}
-</div>
-{!! Form::close() !!}
+    @endif
+
+{{--    <a href="{{ route('upesi::approvals.edit', $id) }}" class='btn btn-default btn-sm'>--}}
+{{--        <i class="glyphicon glyphicon-edit"></i>--}}
+{{--    </a>--}}
+{{--    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [--}}
+{{--        'type' => 'submit',--}}
+{{--        'class' => 'btn btn-danger btn-sm',--}}
+{{--        'onclick' => "return confirm('Are you sure?')"--}}
+{{--    ]) !!}--}}
+{{--</div>--}}
+{{--{!! Form::close() !!}--}}
